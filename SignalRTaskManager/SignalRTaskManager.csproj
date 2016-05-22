@@ -220,6 +220,11 @@
   <ItemGroup>
     <Content Include="assets\css\bootstrap.css" />
     <Content Include="assets\css\bootstrap.min.css" />
+    <Content Include="assets\scripts\plugins\angular\angular.min.js" />
+    <Content Include="assets\scripts\plugins\bootstrap\dist\css\bootstrap.min.css" />
+    <Content Include="assets\scripts\plugins\bootstrap\dist\js\bootstrap.min.js" />
+    <Content Include="assets\scripts\plugins\jquery-validation\dist\jquery.validate.min.js" />
+    <Content Include="assets\scripts\plugins\jQuery\dist\jquery.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="assets\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -280,13 +285,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="assets\scripts\plugins\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="assets\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="assets\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
+    <Content Include="bower.json" />
     <None Include="Project_Readme.html" />
     <Content Include="assets\scripts\jquery-1.10.2.min.map" />
   </ItemGroup>

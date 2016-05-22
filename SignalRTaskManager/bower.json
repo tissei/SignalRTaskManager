@@ -1,0 +1,25 @@
+{
+  "name": "SignalRTaskManager",
+  "homepage": "https://github.com/tissei/SignalRTaskManager",
+  "description": "",
+  "main": "",
+  "authors": [
+    "José Carlos S.A. Tissei <z.94@live.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jQuery": "^2.2.4",
+    "bootstrap": "^3.3.6",
+    "angular": "^1.5.5",
+    "jquery-validation": "jquery-validate#^1.15.0",
+    "jquery": "^2.2.4",
+    "signalr": "^2.2.0"
+  }
+}
