@@ -13,7 +13,7 @@ namespace SignalRTaskManager
                 .Include("~/assets/scripts/plugins/jquery-validation/dist/jquery.validate.min.js")
                 .Include("~/assets/scripts/plugins/bootstrap/dist/js/bootstrap.min.js")
                 .Include("~/assets/scripts/plugins/angular/angular.min.js")
-                .Include("~assets/scripts/plugins/signalr/jquery.signalR.min.js"));
+                .Include("~/assets/scripts/plugins/signalr/jquery.signalR.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/assets/scripts/plugins/bootstrap/dist/css/bootstrap.min.css",
