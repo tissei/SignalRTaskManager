@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SignalRTaskManager.Models
 {
@@ -10,9 +11,9 @@ namespace SignalRTaskManager.Models
 
         public bool Done { get; set; }
 
-        public long UserId { get; set; }
+        //[ForeignKey(nameof(ApplicationUser))]
+        //public string ApplicationUserId { get; set; }
 
-        [ForeignKey(nameof(UserId))]
-        public ApplicationUser User { get; set; }
+        //public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

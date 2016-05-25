@@ -1,9 +1,10 @@
 ﻿using System.Data.Entity;
+using System.Linq;
 using SignalRTaskManager.Models;
 
 namespace SignalRTaskManager.Repositories
 {
-    public abstract class Repository<T> : IRepository<T> where T : Entity
+    public class Repository<T> : IRepository<T> where T : Entity
     {
         private readonly DbSet<T> entities;
         private readonly ApplicationDbContext context;
@@ -14,7 +15,7 @@ namespace SignalRTaskManager.Repositories
             entities = context.Set<T>();
         }
 
-        public T Get(long id)
+        public object Get(long id)
         {
             return entities.Find(id);
         }
@@ -27,8 +28,8 @@ namespace SignalRTaskManager.Repositories
 
         public void Update(T entity)
         {
-            entities.Attach(entity);
             context.Entry(entity).State = EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void Delete(object id)
@@ -45,6 +46,11 @@ namespace SignalRTaskManager.Repositories
             }
 
             entities.Remove(entity);
+        }
+
+        public IQueryable<T> GetAll()
+        {
+            return entities;
         }
     }
 }
