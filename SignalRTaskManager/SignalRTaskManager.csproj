@@ -244,6 +244,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605260052594_InitialCreate.cs" />
+    <Compile Include="Migrations\201605260052594_InitialCreate.Designer.cs">
+      <DependentUpon>201605260052594_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605260111096_Init.cs" />
+    <Compile Include="Migrations\201605260111096_Init.Designer.cs">
+      <DependentUpon>201605260111096_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Entity.cs" />
@@ -321,6 +330,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CodeTemplates\ApiControllerWithContext\Controller.cs.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201605260052594_InitialCreate.resx">
+      <DependentUpon>201605260052594_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605260111096_Init.resx">
+      <DependentUpon>201605260111096_Init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
