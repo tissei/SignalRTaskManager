@@ -1,5 +1,8 @@
 ﻿using System.Data.Entity;
 using System.Linq;
+using System.Web;
+using Microsoft.AspNet.SignalR;
+using SignalRTaskManager.Hubs;
 using SignalRTaskManager.Models;
 
 namespace SignalRTaskManager.Repositories
@@ -8,10 +11,12 @@ namespace SignalRTaskManager.Repositories
     {
         private readonly DbSet<T> entities;
         private readonly ApplicationDbContext context;
+        private readonly IHubContext hub;
 
-        protected Repository(ApplicationDbContext context)
+        protected Repository(ApplicationDbContext context, IHubContext hub)
         {
             this.context = context;
+            this.hub = hub;
             entities = context.Set<T>();
         }
 
@@ -24,12 +29,14 @@ namespace SignalRTaskManager.Repositories
         {
             entities.Add(entity);
             context.SaveChanges();
+            hub.Clients.All.notify($"{HttpContext.Current.User.Identity.Name} created a new {typeof (T).Name}");
         }
 
         public void Update(T entity)
         {
             context.Entry(entity).State = EntityState.Modified;
             context.SaveChanges();
+            hub.Clients.All.notify($"{HttpContext.Current.User.Identity.Name} updated the {typeof(T).Name}: {entity.Id}");
         }
 
         public void Delete(object id)
@@ -46,6 +53,8 @@ namespace SignalRTaskManager.Repositories
             }
 
             entities.Remove(entity);
+
+            hub.Clients.All.notify($"{HttpContext.Current.User.Identity.Name} deleted the {typeof(T).Name}: {entity.Id}");
         }
 
         public IQueryable<T> GetAll()

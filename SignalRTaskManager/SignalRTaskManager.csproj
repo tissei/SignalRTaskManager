@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -25,6 +26,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -70,6 +72,14 @@
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights, Version=1.2.3.490, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.1.2.3\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -240,10 +250,13 @@
     <Compile Include="Controllers\BaseGenericApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SimpleBaseController.cs" />
     <Compile Include="Controllers\TaskApiController.cs" />
+    <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hubs\NotificationHub.cs" />
     <Compile Include="Migrations\201605260052594_InitialCreate.cs" />
     <Compile Include="Migrations\201605260052594_InitialCreate.Designer.cs">
       <DependentUpon>201605260052594_InitialCreate.cs</DependentUpon>
@@ -269,12 +282,23 @@
   <ItemGroup>
     <Content Include="assets\css\bootstrap.css" />
     <Content Include="assets\css\bootstrap.min.css" />
+    <Content Include="assets\scripts\BasicTableDirective.js">
+      <DependentUpon>BasicTableDirective.ts</DependentUpon>
+    </Content>
+    <Content Include="assets\scripts\NotificationHub.js">
+      <DependentUpon>NotificationHub.ts</DependentUpon>
+    </Content>
     <Content Include="assets\scripts\plugins\angular\angular.min.js" />
     <Content Include="assets\scripts\plugins\bootstrap\dist\css\bootstrap.min.css" />
+    <Content Include="assets\scripts\plugins\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="assets\scripts\plugins\bootstrap\dist\js\bootstrap.min.js" />
     <Content Include="assets\scripts\plugins\jquery-validation\dist\jquery.validate.min.js" />
     <Content Include="assets\scripts\plugins\jQuery\dist\jquery.min.js" />
+    <Content Include="assets\scripts\plugins\remarkable-bootstrap-notify\dist\bootstrap-notify.min.js" />
     <Content Include="assets\scripts\plugins\signalr\jquery.signalR.min.js" />
+    <Content Include="assets\scripts\TaskManagerModule.js">
+      <DependentUpon>TaskManagerModule.ts</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="assets\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -339,11 +363,79 @@
       <DependentUpon>201605260111096_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\MvcControllerWithContext\Controller.cs.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\MvcView\List.cs.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="assets\scripts\BasicTableDirective.ts" />
+    <TypeScriptCompile Include="assets\scripts\NotificationHub.ts" />
+    <TypeScriptCompile Include="assets\scripts\TaskManagerModule.ts" />
+    <TypeScriptCompile Include="typings\custom\IHubs.d.ts" />
+    <TypeScriptCompile Include="typings\custom\JQueryStaticCustom.d.ts" />
+    <TypeScriptCompile Include="typings\globals\angular\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\jquery\index.d.ts" />
+    <TypeScriptCompile Include="typings\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="typings\globals\angular\typings.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="tsconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="typings.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="typings\globals\jquery\typings.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\scripts\BasicTableDirective.js.map">
+      <DependentUpon>BasicTableDirective.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\scripts\plugins\bootstrap\dist\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="assets\scripts\plugins\bootstrap\dist\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="assets\scripts\plugins\bootstrap\dist\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="assets\scripts\plugins\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Task\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Task\Delete.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Task\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Task\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Task\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\scripts\TaskManagerModule.js.map">
+      <DependentUpon>TaskManagerModule.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\scripts\NotificationHub.js.map">
+      <DependentUpon>NotificationHub.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">

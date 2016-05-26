@@ -1,0 +1,44 @@
+﻿@model IEnumerable<SignalRTaskManager.Models.TaskModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")    
+</p>
+<basic-table api-route="@Url.RouteUrl("Api")/" api-controller="/api/TaskApi">
+<table class="table table-condensed table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Done)
+        </th>
+        <th></th>
+    </tr>
+
+    <tr ng-repeat="item in tableCtrl.itens">
+        <td>
+            {{item.Title}}
+        </td>
+        <td>
+            {{item.Description}}
+        </td>
+        <td>
+            <input type="checkbox" ng-model="item.Done" disabled="disabled">
+        </td>
+        <td>
+            <a ng-href="@Url.Action("Edit")/{{item.Id}}"><i class="glyphicon glyphicon-pencil"></i></a> |
+            <a ng-href="@Url.Action("Details")/Details/{{item.Id}}"><i class="glyphicon glyphicon-file" style="font-size: 13px"></i></a> |
+            <a ng-href="@Url.Action("Delete")/{{item.Id}}"><i class="glyphicon glyphicon-trash"></i></a> 
+        </td>
+    </tr>
+</table>
+</basic-table>

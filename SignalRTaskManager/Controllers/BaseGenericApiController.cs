@@ -16,7 +16,7 @@ namespace SignalRTaskManager.Controllers
             Repository = repository;
         }
 
-        public virtual IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> Get()
         {
             return Repository.GetAll();
         }

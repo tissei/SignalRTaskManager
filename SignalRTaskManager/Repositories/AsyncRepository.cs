@@ -1,6 +1,9 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
+using Microsoft.AspNet.SignalR;
+using SignalRTaskManager.Hubs;
 using SignalRTaskManager.Models;
 
 namespace SignalRTaskManager.Repositories
@@ -9,10 +12,12 @@ namespace SignalRTaskManager.Repositories
     {
         private readonly DbSet<T> entities;
         private readonly ApplicationDbContext context;
+        private IHubContext hub;
 
         public AsyncRepository(ApplicationDbContext context)
         {
             this.context = context;
+            this.hub = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
             entities = context.Set<T>();
         }
 
@@ -24,12 +29,15 @@ namespace SignalRTaskManager.Repositories
         public async Task<int> Save(T entity)
         {
             entities.Add(entity);
+            hub.Clients.All.notify($"{HttpContext.Current.User.Identity.Name} created a new {typeof(T).Name}");
             return await context.SaveChangesAsync();
+
         }
 
         public async Task<int> Update(T entity)
         {
             context.Entry(entity).State = EntityState.Modified;
+            hub.Clients.All.notify($"{HttpContext.Current.User.Identity.Name} updated the {typeof(T).Name}: {entity.Id}");
             return await context.SaveChangesAsync();
         }
 
@@ -41,6 +49,7 @@ namespace SignalRTaskManager.Repositories
         public async Task<int> Delete(T entity)
         {
             entities.Remove(entity);
+            hub.Clients.All.notify($"{HttpContext.Current.User.Identity.Name} deleted the {typeof(T).Name}: {entity.Id}");
             return await context.SaveChangesAsync();
         }
 

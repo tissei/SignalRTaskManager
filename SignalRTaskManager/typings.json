@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "debug": "registry:npm/debug#2.0.0+20160511151334"
+  },
+  "globalDependencies": {
+    "angular": "registry:dt/angular#1.5.0+20160517064839",
+    "jquery": "registry:dt/jquery#1.10.0+20160417213236",
+    "signalr": "registry:dt/signalr#2.2.0+20160509082439"
+  }
+}
